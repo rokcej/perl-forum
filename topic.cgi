@@ -49,7 +49,7 @@ print <<EOS;
 	<input type="text" name="thread_name" size="40" placeholder="Enter new thread name" />
 	<input type="submit" value="Create Thread" />
 </form>
-<h3>Threads</h3>
+<h3>$topic_name</h3>
 <ul>$threads_list</ul>
 EOS
 print html_footer();

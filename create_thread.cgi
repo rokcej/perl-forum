@@ -21,7 +21,7 @@ $thread_name =~ s/\s{2,}/ /g; # Remove consequtive whitespace
 
 ## Topic id
 # Check if topic id is valid
-if ($topic_id == "") {
+if ($topic_id eq "") {
 	print html_error("No topic selected");
 	exit 0;
 }
@@ -54,7 +54,7 @@ if (length($thread_name) > $max_thread_name_length) {
 
 ## Create thread
 my $thread_id = 0;
-my @threads = get_threads();
+my @threads = get_threads($topic_id);
 # Check if too many threads exist
 my $num_threads = @threads;
 if ($num_threads > $max_threads) {
@@ -70,7 +70,7 @@ for my $i (0 .. $#threads) {
 	}
 }
 # Append thread to threads.txt
-my $threads_file = "topics/$thread_id/threads.txt";
+my $threads_file = "topics/$topic_id/threads.txt";
 open(OUT, ">>", $threads_file) || die "Can't open $threads_file";
 print OUT "$thread_id $thread_name\n";
 close(OUT);
@@ -79,8 +79,8 @@ close(OUT);
 print header();
 print <<EOS;
 <script type="text/javascript">
-	location.replace("topic.cgi?topic_id=$thread_id&thread_id=$thread_id");
+	location.replace("thread.cgi?topic_id=$thread_id&thread_id=$thread_id");
 </script>
-Thread successfully created. Click <a href="topic.cgi?topic_id=$thread_id&thread_id=$thread_id">here</a> if you aren't automatically redirected.
+Thread successfully created. Click <a href="thread.cgi?topic_id=$thread_id&thread_id=$thread_id">here</a> if you aren't automatically redirected.
 </script>
 EOS
