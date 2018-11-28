@@ -66,6 +66,42 @@ sub get_threads { # (int topic_id)
 	return @threads;
 }
 
+sub get_replies { # (int topic_id, int thread_id)
+	my $topic_id = $_[0];
+	my $thread_id = $_[1];
+	my $replies_file = "topics/$topic_id/$thread_id.txt";
+
+	# Create required files
+	if (!(-e $replies_file && -f $replies_file)) {
+		open(OUT, ">>", $replies_file) || die "Can't open $replies_file";
+		close(OUT);
+	}
+
+	# Get posts
+	open(IN, "<", $replies_file) || die "Can't open $replies_file";
+	my @replies_lines = <IN>;
+	close(IN);
+
+	my @replies = ();
+	my $i = 0;
+	while ($i <= $#replies_lines) {
+		chomp($replies_lines[$i]);
+		my @data = split(/ /, $replies_lines[$i], 2);
+		$i++;
+		chomp($replies_lines[$i]);
+		my $text = $replies_lines[$i];
+		$i++;
+
+		push(@replies, {
+			id => $data[0], 
+			name => $data[1],
+			text => $text
+		});
+	}
+
+	return @replies;
+}
+
 sub html_header { # (string title)
 	return header() . <<EOS;
 <html>

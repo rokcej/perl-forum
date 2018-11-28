@@ -28,7 +28,7 @@ for my $i (0 .. $#topics) {
 
 # Check if topic exists
 if ($topic_name eq "") {
-	print html_error("Topic doesn't exist");
+	print html_error("Selected topic doesn't exist");
 	exit 0;
 }
 
@@ -49,7 +49,7 @@ print <<EOS;
 	<input type="text" name="thread_name" size="40" placeholder="Enter new thread name" />
 	<input type="submit" value="Create Thread" />
 </form>
-<h3>$topic_name</h3>
+<h3><a href="index.cgi">Home</a> > $topic_name</h3>
 <ul>$threads_list</ul>
 EOS
 print html_footer();

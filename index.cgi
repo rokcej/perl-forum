@@ -22,7 +22,7 @@ print <<EOS;
 	<input type="text" name="topic_name" size="40" placeholder="Enter new topic name" />
 	<input type="submit" value="Create Topic" />
 </form>
-<h3>Topics</h3>
+<h3>Home</h3>
 <ul>$topics_list</ul>
 EOS
 print html_footer();
