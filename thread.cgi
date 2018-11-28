@@ -21,29 +21,15 @@ if ($thread_id eq "") {
 	exit 0;
 }
 
-# Get topic name
-my $topic_name = "";
-my @topics = get_topics();
-for my $i (0 .. $#topics) {
-	if ($topic_id == $topics[$i]{id}) {
-		$topic_name = $topics[$i]{name};
-		last;
-	}
-}
+# Check if topic exists
+my $topic_name = get_topic_name($topic_id);
 if ($topic_name eq "") {
 	print html_error("Selected topic doesn't exist");
 	exit 0;
 }
 
-# Get thread name
-my $thread_name = "";
-my @threads = get_threads($topic_id);
-for my $i (0 .. $#threads) {
-	if ($thread_id == $threads[$i]{id}) {
-		$thread_name = $threads[$i]{name};
-		last;
-	}
-}
+# Check if thread exists
+my $thread_name = get_thread_name($topic_id, $thread_id);
 if ($thread_name eq "") {
 	print html_error("Selected thread doesn't exist");
 	exit 0;
@@ -62,6 +48,9 @@ for my $i (0 .. $#replies) {
 	<p>$text</p>
 </li>\n
 EOS
+}
+if ($replies_list eq "") {
+	$replies_list = "There aren't any replies to this thread yet"
 }
 
 # Print HTML

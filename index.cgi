@@ -15,6 +15,9 @@ for my $i (0 .. $#topics) {
 	my $name = $topics[$i]{name};
 	$topics_list .= "<li><a href=\"topic.cgi?topic_id=$id\">$name</a></li>\n";
 }
+if ($topics_list eq "") {
+	$topics_list = "There are no topics yet"
+}
 
 print html_header("Forum");
 print <<EOS;

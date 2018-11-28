@@ -16,17 +16,8 @@ if ($topic_id eq "") {
 	exit 0;
 }
 
-# Get topic name
-my $topic_name = "";
-my @topics = get_topics();
-for my $i (0 .. $#topics) {
-	if ($topic_id == $topics[$i]{id}) {
-		$topic_name = $topics[$i]{name};
-		last;
-	}
-}
-
 # Check if topic exists
+my $topic_name = get_topic_name($topic_id);
 if ($topic_name eq "") {
 	print html_error("Selected topic doesn't exist");
 	exit 0;
@@ -39,6 +30,9 @@ for my $i (0 .. $#threads) {
 	my $id = $threads[$i]{id};
 	my $name = $threads[$i]{name};
 	$threads_list .= "<li><a href=\"thread.cgi?topic_id=$topic_id&thread_id=$id\">$name</a></li>\n";
+}
+if ($threads_list eq "") {
+	$threads_list = "There aren't any threads for this topic yet"
 }
 
 # Print HTML

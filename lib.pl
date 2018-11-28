@@ -3,6 +3,13 @@ use warnings;
 use CGI qw(:standard -debug);
 use CGI::Carp qw(fatalsToBrowser);
 
+sub xss { # (string text)
+	my $text = $_[0];
+	$text =~ s/</&lt;/g; # Replace < symbol
+	$text =~ s/>/&gt;/g; # Replace > symbol
+	return $text;
+}
+
 sub get_topics { # ()
 	my $topics_dir = "topics";
 	my $topics_file = "$topics_dir/topics.txt";
@@ -32,6 +39,18 @@ sub get_topics { # ()
 	}
 
 	return @topics;
+}
+
+sub get_topic_name { # (int topic_id)
+	my $topic_id = $_[0];
+
+	my @topics = get_topics();
+	for my $i (0 .. $#topics) {
+		if ($topic_id == $topics[$i]{id}) {
+			return $topics[$i]{name};
+		}
+	}
+	return "";
 }
 
 sub get_threads { # (int topic_id)
@@ -64,6 +83,19 @@ sub get_threads { # (int topic_id)
 	}
 
 	return @threads;
+}
+
+sub get_thread_name { # (int topic_id, int thread_id)
+	my $topic_id = $_[0];
+	my $thread_id = $_[1];
+
+	my @threads = get_threads($topic_id);
+	for my $i (0 .. $#threads) {
+		if ($thread_id == $threads[$i]{id}) {
+			return $threads[$i]{name};
+		}
+	}
+	return "";
 }
 
 sub get_replies { # (int topic_id, int thread_id)

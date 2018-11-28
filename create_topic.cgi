@@ -12,11 +12,12 @@ my $max_topic_name_length = 100;
 my $max_topics = 20;
 
 # Parameters
-my $topic_name = param("topic_name");
+my $topic_name = xss(param("topic_name"));
 
-$topic_name =~ s/\n//g; # Remove newline,
+$topic_name =~ s/\n//g; # Remove newline
 $topic_name =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespace
-$topic_name =~ s/\s{2,}/ /g; # Remove consequtive whitespace
+$topic_name =~ s/\s+/ /g; # Remove consequtive whitespace
+
 
 ## Topic name
 # Check if topic name is valid
@@ -30,16 +31,16 @@ if (length($topic_name) > $max_topic_name_length) {
 	exit 0;
 }
 
-## Create topic
-my $topic_id = 0;
-my @topics = get_topics();
 # Check if too many topics exist
+my @topics = get_topics();
 my $num_topics = @topics;
 if ($num_topics > $max_topics) {
 	print html_error("Too many topics already exist");
 	exit 0;
 }
+
 # Check existing topics
+my $topic_id = 0;
 for my $i (0 .. $#topics) {
 	my $id = $topics[$i]{id};
 	my $name = $topics[$i]{name};
@@ -53,6 +54,7 @@ for my $i (0 .. $#topics) {
 		$topic_id = $id + 1;
 	}
 }
+
 # Append topic to topics.txt
 my $topics_file = "topics/topics.txt";
 open(OUT, ">>", $topics_file) || die "Can't open $topics_file";
