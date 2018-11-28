@@ -9,7 +9,7 @@ require "./lib.pl";
 
 # Constants
 my $max_reply_name_length = 100;
-my $max_reply_text_length = 1000;
+my $max_reply_text_length = 10000;
 my $max_replies = 100;
 
 # Parameters

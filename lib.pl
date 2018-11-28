@@ -16,7 +16,7 @@ sub get_topics { # ()
 
 	# Create required dirs / files if they don't exist
 	if (!(-e $topics_dir && -d $topics_dir)) {
-		mkdir($topics_dir);
+		mkdir($topics_dir) || die "Can't create $topics_dir";
 	}
 	if (!(-e $topics_file && -f $topics_file)) {
 		open(OUT, ">>", $topics_file) || die "Can't open $topics_file";
@@ -60,7 +60,7 @@ sub get_threads { # (int topic_id)
 
 	# Create required dirs / files if they don't exist
 	if (!(-e $threads_dir && -d $threads_dir)) {
-		mkdir($threads_dir);
+		mkdir($threads_dir) || die "Can't create $threads_dir";
 	}
 	if (!(-e $threads_file && -f $threads_file)) {
 		open(OUT, ">>", $threads_file) || die "Can't open $threads_file";
@@ -138,16 +138,55 @@ sub html_header { # (string title)
 	return header() . <<EOS;
 <html>
 <head>
-	<title>$_[0]</title>
+<title>$_[0]</title>
+	
+<!-- CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-<p><a href="index.cgi">Home</a></p>
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+	<div class="container">
+		<a class="navbar-brand" href="index.cgi">Perl Forum</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" href="index.cgi">Topics</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">About</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Support</a>
+			</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+
 EOS
 }
 
 sub html_footer { # ()
 	return <<EOS;
-<p>&copy; 2018 Rok Cej</p>
+<div class="container">
+	<hr>
+	<footer>
+		<p class="footer-text text-center">&copy; 2018 Rok Cej</p>
+	</footer>
+</div>
+
+<!-- JS -->
+<script src="js/jquery-3.3.1.min.js"></script> <!-- jQuery -->
+<script src="js/bootstrap.min.js"></script> <!-- Latest compiled and minified JavaScript -->
+
 </body>
 </html>
 EOS
@@ -155,7 +194,10 @@ EOS
 
 sub html_error { # (string message)
 	return html_header("Error") . <<EOS . html_footer();
-<h3>Error: $_[0]</h3>
+<div class="container my-5 text-center">
+	<h3>Error: $_[0]</h3>
+	<p>If you believe this is a bug, please contact the administrators</p>
+</div>
 EOS
 }
 

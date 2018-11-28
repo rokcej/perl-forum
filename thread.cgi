@@ -43,27 +43,57 @@ for my $i (0 .. $#replies) {
 	my $name = $replies[$i]{name};
 	my $text = $replies[$i]{text};
 	$replies_list .= <<EOS;
-<li>
-	<p>Posted by: $name</p>
-	<p>$text</p>
-</li>\n
+<div class="card my-1 flex-row">
+	<div class="card-body col-2 border-right">
+		<h3 class="card-title">$name</h3>
+	</div>
+	<div class="card-body col-10">
+		<p class="card-text">$text</p>
+	</div>
+</div>
 EOS
 }
 if ($replies_list eq "") {
-	$replies_list = "There aren't any replies to this thread yet"
+	$replies_list = <<EOS;
+<div class="alert alert-primary alert-trim">
+	There aren't any replies to this thread yet.
+</div>
+EOS
 }
 
 # Print HTML
 print html_header($thread_name);
 print <<EOS;
-<h3><a href="index.cgi">Home</a> > <a href="topic.cgi?topic_id=$topic_id">$topic_name</a> > $thread_name</h3>
-<ul>$replies_list</ul>
-<form action="create_reply.cgi" method="post">
-	<input type="hidden" name="topic_id" value="$topic_id" />
-	<input type="hidden" name="thread_id" value="$thread_id" />
-	<input type="text" name="reply_name" size="20" placeholder="Enter your name" /> <br>
-	<textarea name="reply_text" rows="6" cols="60" placeholder="Enter your message"></textarea> <br>
-	<input type="submit" value="Post Reply" />
-</form>
+
+<div class="container">
+	<nav aria-label="breadcrumb">
+		<ol class="my-3 breadcrumb">
+			<li class="breadcrumb-item"><a href="index.cgi">Topics</a></li>
+			<li class="breadcrumb-item"><a href="topic.cgi?topic_id=$topic_id">$topic_name</a></li>
+			<li class="breadcrumb-item active" aria-current="page">$thread_name</li>
+		</ol>
+	</nav>
+
+	<h1>$thread_name</h1>
+	$replies_list
+</div>
+<div class="jumbotron jumbotron-fluid py-4 my-3">
+	<div class="container">
+		<h2>Post a Reply</h2>
+		<form class="my-3" action="create_reply.cgi" method="post">
+			<input type="hidden" name="topic_id" value="$topic_id" />
+			<input type="hidden" name="thread_id" value="$thread_id" />
+			<div class="form-group">
+				<input class="form-control" type="text" name="reply_name" size="20" placeholder="Enter your name" />
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" name="reply_text" rows="6" cols="60" placeholder="Enter your message"></textarea>
+			</div>
+			<div class="form-group">
+				<input class="btn btn-primary" type="submit" value="Post Reply" />
+			</div>
+		</form>
+	</div>
+</div>
 EOS
 print html_footer();

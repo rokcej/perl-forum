@@ -13,19 +13,48 @@ my @topics = get_topics();
 for my $i (0 .. $#topics) {
 	my $id = $topics[$i]{id};
 	my $name = $topics[$i]{name};
-	$topics_list .= "<li><a href=\"topic.cgi?topic_id=$id\">$name</a></li>\n";
+	$topics_list .= <<EOS;
+<li class=\"list-group-item\">
+	<a href=\"topic.cgi?topic_id=$id\">$name</a>
+</li>
+EOS
 }
 if ($topics_list eq "") {
-	$topics_list = "There are no topics yet"
+	$topics_list = <<EOS;
+<div class="alert alert-primary alert-trim">
+	There are no topics yet.
+</div>
+EOS
+} else {
+	$topics_list = <<EOS;
+<ul class="list-group">
+	$topics_list
+</ul>
+EOS
 }
 
 print html_header("Forum");
 print <<EOS;
-<form action="create_topic.cgi" method="post">
-	<input type="text" name="topic_name" size="40" placeholder="Enter new topic name" />
-	<input type="submit" value="Create Topic" />
-</form>
-<h3>Home</h3>
-<ul>$topics_list</ul>
+<div class="container">
+	<nav aria-label="breadcrumb">
+		<ol class="my-3 breadcrumb">
+			<li class="breadcrumb-item active" aria-current="page">Topics</li>
+		</ol>
+	</nav>
+
+	<form class="my-3" action="create_topic.cgi" method="post">
+		<div class="row">
+			<div class="col-sm-5">
+				<input class="form-control" type="text" name="topic_name" placeholder="Enter new topic name" />
+			</div>
+			<div class="col-sm">
+				<input class="btn btn-primary" type="submit" value="Create Topic" />
+			</div>
+		</div>
+	</form>
+
+	<h1>Topics</h1>
+	$topics_list
+</div>
 EOS
 print html_footer();
