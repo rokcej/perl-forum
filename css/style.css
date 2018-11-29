@@ -9,3 +9,13 @@
 .topic-name, .thread-name {
 	font-size: 22px;
 }
+
+.reply-info {
+	width: 200px;
+}
+.reply-info-name {
+	font-size: 24px;
+}
+.reply-info-date {
+	font-size: 14px;
+}

@@ -43,12 +43,14 @@ for my $i (0 .. $#replies) {
 	my $name = $replies[$i]{name};
 	my $text = $replies[$i]{text};
 	$replies_list .= <<EOS;
-<div class="card my-2 flex-row">
-	<div class="card-body col-2 border-right">
-		<h3 class="card-title">$name</h3>
+<div class="border my-2 d-flex flex-row" id="reply$id">
+	<div class="p-3 reply-info border-right text-center flex-shrink-0">
+		<i class="fas fa-user fa-5x m-1"></i>
+		<h4 class="m-1 reply-info-name text-primary">$name</h4>
+		<p class="m-1 reply-info-date text-secondary">Date-time</p>
 	</div>
-	<div class="card-body col-10">
-		<p class="card-text">$text</p>
+	<div class="p-3">
+		<p class="">$text</p>
 	</div>
 </div>
 EOS

@@ -26,7 +26,9 @@ print <<EOS;
 		<div class="row">
 			<div class="col-sm-4 my-1">
 				<div class="card">
-					<h5 class="card-header">Topics</h5>
+					<h5 class="card-header">
+						<i class="fas fa-folder"></i> Topics
+					</h5>
 					<div class="card-body">
 						<p class="card-text">You can explore and create different discussion topics, which are sorted alphabetically.</p>
 					</div>
@@ -34,7 +36,9 @@ print <<EOS;
 			</div>
 			<div class="col-sm-4 my-1">
 				<div class="card">
-					<h5 class="card-header">Threads</h5>
+					<h5 class="card-header">
+						<i class="fas fa-file"></i> Threads
+					</h5>
 					<div class="card-body">
 						<p class="card-text">For each topic, you can browse and create new threads, which are sorted by most recent activiy.</p>
 					</div>
@@ -42,7 +46,9 @@ print <<EOS;
 			</div>
 			<div class="col-sm-4 my-1">
 				<div class="card">
-					<h5 class="card-header">Replies</h5>
+					<h5 class="card-header">
+						<i class="fas fa-pen"></i> Replies
+					</h5>
 					<div class="card-body">
 						<p class="card-text">You can read and write your own replies to various threads, which are sorted from newest to oldest.</p>
 					</div>

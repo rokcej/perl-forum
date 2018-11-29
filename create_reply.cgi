@@ -97,8 +97,8 @@ close(OUT);
 print header();
 print <<EOS;
 <script type="text/javascript">
-	location.replace("replies.cgi?topic_id=$topic_id&thread_id=$thread_id");
+	location.replace("replies.cgi?topic_id=$topic_id&thread_id=$thread_id#reply$reply_id");
 </script>
-Reply successfully created. Click <a href="replies.cgi?topic_id=$topic_id&thread_id=$thread_id">here</a> if you aren't automatically redirected.
+Reply successfully created. Click <a href="replies.cgi?topic_id=$topic_id&thread_id=$thread_id#reply$reply_id">here</a> if you aren't automatically redirected.
 </script>
 EOS

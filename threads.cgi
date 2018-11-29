@@ -31,7 +31,7 @@ for my $i (0 .. $#threads) {
 	my $name = $threads[$i]{name};
 	$threads_list .= <<EOS;
 <a class="thread-name list-group-item list-group-item-action" href=\"replies.cgi?topic_id=$topic_id&thread_id=$id\">
-	$name
+	<i class="fas fa-angle-double-right"></i> $name
 </a>
 EOS
 }

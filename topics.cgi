@@ -15,7 +15,7 @@ for my $i (0 .. $#topics) {
 	my $name = $topics[$i]{name};
 	$topics_list .= <<EOS;
 <a class="topic-name list-group-item list-group-item-action" href=\"threads.cgi?topic_id=$id\">
-	$name
+	<i class="fas fa-angle-right"></i> $name
 </a>
 EOS
 }
