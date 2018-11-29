@@ -43,7 +43,7 @@ for my $i (0 .. $#replies) {
 	my $name = $replies[$i]{name};
 	my $text = $replies[$i]{text};
 	$replies_list .= <<EOS;
-<div class="card my-1 flex-row">
+<div class="card my-2 flex-row">
 	<div class="card-body col-2 border-right">
 		<h3 class="card-title">$name</h3>
 	</div>
@@ -68,14 +68,16 @@ print <<EOS;
 <div class="container">
 	<nav aria-label="breadcrumb">
 		<ol class="my-3 breadcrumb">
-			<li class="breadcrumb-item"><a href="index.cgi">Topics</a></li>
-			<li class="breadcrumb-item"><a href="topic.cgi?topic_id=$topic_id">$topic_name</a></li>
+			<li class="breadcrumb-item"><a href="topics.cgi">Topics</a></li>
+			<li class="breadcrumb-item"><a href="threads.cgi?topic_id=$topic_id">$topic_name</a></li>
 			<li class="breadcrumb-item active" aria-current="page">$thread_name</li>
 		</ol>
 	</nav>
 
-	<h1>$thread_name</h1>
-	$replies_list
+	<div class="mb-4">
+		<h1 class="my-3">$thread_name</h1>
+		$replies_list
+	</div>
 </div>
 <div class="jumbotron jumbotron-fluid py-4 my-3">
 	<div class="container">

@@ -66,7 +66,7 @@ print header();
 print header();
 print <<EOS;
 <script type="text/javascript">
-	location.replace("topic.cgi?topic_id=$topic_id");
+	location.replace("threads.cgi?topic_id=$topic_id");
 </script>
-Topic successfully created. Click <a href="topic.cgi?topic_id=$topic_id">here</a> if you aren't automatically redirected.
+Topic successfully created. Click <a href="threads.cgi?topic_id=$topic_id">here</a> if you aren't automatically redirected.
 EOS

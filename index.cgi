@@ -7,54 +7,49 @@ use CGI::Carp qw(fatalsToBrowser);
 
 require "./lib.pl";
 
-# Get list of topics
-my $topics_list = "";
-my @topics = get_topics();
-for my $i (0 .. $#topics) {
-	my $id = $topics[$i]{id};
-	my $name = $topics[$i]{name};
-	$topics_list .= <<EOS;
-<li class=\"list-group-item\">
-	<a href=\"topic.cgi?topic_id=$id\">$name</a>
-</li>
-EOS
-}
-if ($topics_list eq "") {
-	$topics_list = <<EOS;
-<div class="alert alert-primary alert-trim">
-	There are no topics yet.
-</div>
-EOS
-} else {
-	$topics_list = <<EOS;
-<ul class="list-group">
-	$topics_list
-</ul>
-EOS
-}
-
 print html_header("Forum");
 print <<EOS;
-<div class="container">
-	<nav aria-label="breadcrumb">
-		<ol class="my-3 breadcrumb">
-			<li class="breadcrumb-item active" aria-current="page">Topics</li>
-		</ol>
-	</nav>
 
-	<form class="my-3" action="create_topic.cgi" method="post">
+<div class="jumbotron jumbotron-fluid my-3 text-center bg-primary">
+	<div class="container">
+		<h1 class="display-1 text-white">Perl Forum</h1>
+		<p class="lead text-light">A simple and anonymous forum open to anyone, anywhere</p>
+		<a href="topics.cgi" class="btn btn-light mt-3" role="button"><h1 class="display-4 py-2 px-4">Start Browsing</h1></a>
+	</div>
+</div>
+
+<div class="container">
+	<div class="my-5">
+		<div class="text-center my-3">
+			<h1 class="display-4">Features</h1>
+		</div>
 		<div class="row">
-			<div class="col-sm-5">
-				<input class="form-control" type="text" name="topic_name" placeholder="Enter new topic name" />
+			<div class="col-sm-4 my-1">
+				<div class="card">
+					<h5 class="card-header">Topics</h5>
+					<div class="card-body">
+						<p class="card-text">You can explore and create different discussion topics, which are sorted alphabetically.</p>
+					</div>
+				</div>
 			</div>
-			<div class="col-sm">
-				<input class="btn btn-primary" type="submit" value="Create Topic" />
+			<div class="col-sm-4 my-1">
+				<div class="card">
+					<h5 class="card-header">Threads</h5>
+					<div class="card-body">
+						<p class="card-text">For each topic, you can browse and create new threads, which are sorted by most recent activiy.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4 my-1">
+				<div class="card">
+					<h5 class="card-header">Replies</h5>
+					<div class="card-body">
+						<p class="card-text">You can read and write your own replies to various threads, which are sorted from newest to oldest.</p>
+					</div>
+				</div>
 			</div>
 		</div>
-	</form>
-
-	<h1>Topics</h1>
-	$topics_list
+	</div>
 </div>
 EOS
 print html_footer();

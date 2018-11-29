@@ -71,8 +71,8 @@ close(OUT);
 print header();
 print <<EOS;
 <script type="text/javascript">
-	location.replace("thread.cgi?topic_id=$topic_id&thread_id=$thread_id");
+	location.replace("replies.cgi?topic_id=$topic_id&thread_id=$thread_id");
 </script>
-Thread successfully created. Click <a href="thread.cgi?topic_id=$topic_id&thread_id=$thread_id">here</a> if you aren't automatically redirected.
+Thread successfully created. Click <a href="replies.cgi?topic_id=$topic_id&thread_id=$thread_id">here</a> if you aren't automatically redirected.
 </script>
 EOS

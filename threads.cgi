@@ -30,22 +30,22 @@ for my $i (0 .. $#threads) {
 	my $id = $threads[$i]{id};
 	my $name = $threads[$i]{name};
 	$threads_list .= <<EOS;
-<li class=\"list-group-item\">
-	<a href=\"thread.cgi?topic_id=$topic_id&thread_id=$id\">$name</a>
-</li>
+<a class="thread-name list-group-item list-group-item-action" href=\"replies.cgi?topic_id=$topic_id&thread_id=$id\">
+	$name
+</a>
 EOS
 }
 if ($threads_list eq "") {
 	$threads_list = <<EOS;
 <div class="alert alert-primary alert-trim">
-	There aren't any replies to this topic yet.
+	There aren't any threads in this topic yet.
 </div>
 EOS
 } else {
 	$threads_list = <<EOS;
-<ul class="list-group">
+<div class="list-group">
 	$threads_list
-</ul>
+</div>
 EOS
 }
 
@@ -55,7 +55,7 @@ print <<EOS;
 <div class="container">
 	<nav aria-label="breadcrumb">
 		<ol class="my-3 breadcrumb">
-			<li class="breadcrumb-item"><a href="index.cgi">Topics</a></li>
+			<li class="breadcrumb-item"><a href="topics.cgi">Topics</a></li>
 			<li class="breadcrumb-item active" aria-current="page">$topic_name</li>
 		</ol>
 	</nav>
@@ -71,9 +71,11 @@ print <<EOS;
 			</div>
 		</div>
 	</form>
-
-	<h1>$topic_name</h1>
-	$threads_list
+	
+	<div class="mb-4">
+		<h1 class="my-3">$topic_name</h1>
+		$threads_list
+	</div>
 </div>
 EOS
 print html_footer();

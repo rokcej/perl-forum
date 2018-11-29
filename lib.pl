@@ -142,7 +142,8 @@ sub html_header { # (string title)
 	
 <!-- CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css"> <!-- Bootstrap -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -157,13 +158,13 @@ sub html_header { # (string title)
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav">
 			<li class="nav-item">
-				<a class="nav-link" href="index.cgi">Topics</a>
+				<a class="nav-link" href="index.cgi">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="topics.cgi">Topics</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#">About</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Support</a>
 			</li>
 			</ul>
 		</div>

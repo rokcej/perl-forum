@@ -5,3 +5,7 @@
 .footer-text {
 	color: grey;
 }
+
+.topic-name, .thread-name {
+	font-size: 22px;
+}
