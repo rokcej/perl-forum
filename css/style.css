@@ -19,3 +19,6 @@
 .reply-info-date {
 	font-size: 14px;
 }
+.thread, .topic, .reply, .breadcrumb {
+	word-break: break-all;
+}

@@ -9,6 +9,9 @@ require "./lib.pl";
 
 # Parameters
 my $topic_id = param("topic_id");
+my $query = xss(param("query"));
+
+my $search = ($query eq "" ? 0 : 1);
 
 # Check if topic id is valid
 if ($topic_id eq "") {
@@ -25,28 +28,89 @@ if ($topic_name eq "") {
 
 # Get list of threads
 my $threads_list = "";
-my @threads = get_threads($topic_id);
+my @threads_unsorted = get_threads($topic_id);
+# Sort threads by activity and apply search query
+for my $i (0 .. $#threads_unsorted) {
+	my $id = $threads_unsorted[$i]{id};
+	my @replies = get_replies($topic_id, $id);
+
+	$threads_unsorted[$i]{last_activity} = ($#replies >= 0 ? $replies[$#replies]{time} : "0000-01-01 00:00:00");
+
+	if ($search) {
+		my $reply_matches = 0;
+		$threads_unsorted[$i]{hide} = 1;
+
+		my $new_name = $threads_unsorted[$i]->{name};
+		$new_name =~ s/(\Q$query\E)/<span class="text-primary">$1<\/span>/gi;
+		#$new_name =~ s/(\Q$query\E)/$1/gi;
+
+		# Check thread title for match
+		if (!($new_name eq $threads_unsorted[$i]{name})) {
+			$threads_unsorted[$i]{name} = $new_name;
+			$threads_unsorted[$i]{hide} = 0;
+		}
+
+		# Check replies for matches
+		for my $j (0 .. $#replies) {
+			if (index(lc($replies[$j]{text}), lc($query)) != -1) {
+				$reply_matches++;
+			}
+		}
+		if ($reply_matches > 0) {
+			$threads_unsorted[$i]{hide} = 0;
+			my $reply_matches_string = ($reply_matches == 1 ? "$reply_matches reply match" : "$reply_matches reply matches");
+			$threads_unsorted[$i]{name} .= " <span class=\"badge badge-primary\">$reply_matches_string</span>";
+		}
+	}
+}
+my @threads = sort { $b->{last_activity} cmp $a->{last_activity} } @threads_unsorted;
 for my $i (0 .. $#threads) {
+	if ($search) {
+		if ($threads[$i]{hide}) {
+			next;
+		}
+	}
+
 	my $id = $threads[$i]{id};
 	my $name = $threads[$i]{name};
+	my $last_activity = $threads[$i]{last_activity};
+
+	my @replies = get_replies($topic_id, $id);
+	my $num_replies = @replies;
+	my $num_replies_string = $num_replies == 1 ? "$num_replies reply" : "$num_replies replies";
+
 	$threads_list .= <<EOS;
-<a class="thread-name list-group-item list-group-item-action" href=\"replies.cgi?topic_id=$topic_id&thread_id=$id\">
-	<i class="fas fa-angle-double-right"></i> $name
+<a class="thread list-group-item list-group-item-action" href=\"replies.cgi?topic_id=$topic_id&thread_id=$id\">
+	<span class="thread-name"><i class="fas fa-angle-double-right"></i> $name</span>
+	<span class="text-black-50 float-right mt-1">$num_replies_string <i class="fas fa-arrow-right"></i> Last reply $last_activity</span>
 </a>
 EOS
 }
-if ($threads_list eq "") {
-	$threads_list = <<EOS;
+
+# Notice above thread list
+my $notice = "";
+if ($threads_list eq "") { # Thread list empty
+	if ($search && $#threads > -1) {
+		$notice = <<EOS;
 <div class="alert alert-primary alert-trim">
-	There aren't any threads in this topic yet.
+	No threads in this topic match the search query "$query"
 </div>
 EOS
-} else {
-	$threads_list = <<EOS;
-<div class="list-group">
-	$threads_list
+	} else {
+		$notice = <<EOS;
+<div class="alert alert-primary alert-trim">
+	There aren't any threads in this topic yet
 </div>
 EOS
+	}
+} else { # Thread list not empty
+	if ($search) {
+		$notice = <<EOS;
+<div class="alert alert-primary alert-trim">
+	Showing results for "$query"
+</div>
+EOS
+	}
 }
 
 # Print HTML
@@ -60,21 +124,51 @@ print <<EOS;
 		</ol>
 	</nav>
 
-	<form class="my-3" action="create_thread.cgi" method="post">
-			<input type="hidden" name="topic_id" value="$topic_id" />
-		<div class="row">
-			<div class="col-sm-5">
-				<input class="form-control" type="text" name="thread_name" size="40" placeholder="Enter new thread name" />
+	<form class="my-3" action="threads.cgi" method="get">
+		<input type="hidden" name="topic_id" value="$topic_id" />
+		<div class="d-flex flex-row">
+			<div class="mr-2">
+				<input class="form-control" type="text" name="query" size="40" placeholder="Enter search query" />
 			</div>
-			<div class="col-sm">
-				<input class="btn btn-primary" type="submit" value="Create Thread" />
+			<div class="ml-2">
+				<input class="btn btn-primary" type="submit" value="Search" />
 			</div>
 		</div>
 	</form>
 	
 	<div class="mb-4">
 		<h1 class="my-3">$topic_name</h1>
-		$threads_list
+		$notice
+		<div class="list-group">
+			$threads_list
+		</div>
+	</div>
+</div>
+
+<div class="jumbotron jumbotron-fluid py-4 my-3">
+	<div class="container">
+		<h2>Create a new thread</h2>
+		<form class="my-3" action="create_thread.cgi" method="post">
+			<input type="hidden" name="topic_id" value="$topic_id" />
+			<div class="input-group my-3">
+				<input class="form-control" type="text" name="thread_name" size="40" placeholder="Enter thread title" />
+				<div class="input-group-append">
+					<span class="input-group-text">Thread title</span>
+				</div>
+			</div>
+			<div class="input-group my-3">
+				<input class="form-control" type="text" name="reply_name" size="40" placeholder="Enter your name" />
+				<div class="input-group-append">
+					<span class="input-group-text">Your name</span>
+				</div>
+			</div>
+			<div class="input-group my-3">
+				<textarea class="form-control" name="reply_text" rows="6" cols="80" placeholder="Enter your message"></textarea>
+			</div>
+			<div class="input-group my-3">
+				<input class="btn btn-primary" type="submit" value="Create thread" />
+			</div>
+		</form>
 	</div>
 </div>
 EOS

@@ -10,6 +10,28 @@ sub xss { # (string text)
 	return $text;
 }
 
+sub parse_name { # (string name)
+	my $name = $_[0];
+
+	$name =~ s/\n//g; # Remove newline
+	$name =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespace
+	$name =~ s/\s+/ /g; # Remove consequtive whitespace
+
+	return $name;
+}
+
+sub parse_text { # (string text)
+	my $text = $_[0];
+
+	$text =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespace
+	$text =~ s/\n/<br>/g; # Convert newline to <br>
+	$text =~ s/\s+/ /g; # Remove consequtive whitespace
+	$text =~ s/\s+<br>|<br>\s+/<br>/g; # Get rid of space before or after br
+	$text =~ s/(<br>){3,}/<br><br>/g; # If more than 2 consequtive <br>, remove the excess
+
+	return $text;
+}
+
 sub get_topics { # ()
 	my $topics_dir = "topics";
 	my $topics_file = "$topics_dir/topics.txt";
@@ -118,15 +140,16 @@ sub get_replies { # (int topic_id, int thread_id)
 	my $i = 0;
 	while ($i <= $#replies_lines) {
 		chomp($replies_lines[$i]);
-		my @data = split(/ /, $replies_lines[$i], 2);
+		my @data = split(/ /, $replies_lines[$i], 4);
 		$i++;
 		chomp($replies_lines[$i]);
 		my $text = $replies_lines[$i];
 		$i++;
 
 		push(@replies, {
-			id => $data[0], 
-			name => $data[1],
+			id => $data[0],
+			time => "$data[1] $data[2]",
+			name => $data[3],
 			text => $text
 		});
 	}

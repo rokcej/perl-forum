@@ -7,64 +7,65 @@ use CGI::Carp qw(fatalsToBrowser);
 
 require "./lib.pl";
 
+sub check_reply_params { # (int topic_id, int thread_id, string reply_name, string reply_text)
+	# Constants
+	my $max_reply_name_length = 100;
+	my $max_reply_text_length = 10000;
+
+	my $topic_id = $_[0];
+	my $thread_id = $_[1];
+	my $reply_name = $_[2];
+	my $reply_text = $_[3];
+
+	# Check if topic and thread id are valid
+	if ($topic_id eq "") {
+		return "No topic selected";
+	}
+	if ($thread_id eq "") {
+		return "No thread selected";
+	}
+
+	# Check if topic and thread exist
+	my $topic_name = get_topic_name($topic_id);
+	if ($topic_name eq "") {
+		return "Selected topic doesn't exist";
+	}
+	my $thread_name = get_thread_name($topic_id, $thread_id);
+	if ($thread_name eq "") {
+		return "Selected thread doesn't exist";
+	}
+
+	# Check if reply name and text are valid
+	if ($reply_name eq "") {
+		return "Your name can't be empty";
+	}
+	if (length($reply_name) > $max_reply_name_length) {
+		return "Your name is too long";
+	}
+	if ($reply_text eq "") {
+		return "Your message can't be empty";
+	}
+	if (length($reply_text) > $max_reply_text_length) {
+		return "Your message is too long";
+	}
+
+	return "";
+}
+
+
 # Constants
-my $max_reply_name_length = 100;
-my $max_reply_text_length = 10000;
 my $max_replies = 100;
 
 # Parameters
 my $topic_id = param("topic_id");
 my $thread_id = param("thread_id");
-my $reply_name = xss(param("reply_name"));
-my $reply_text = xss(param("reply_text"));
+my $reply_name = parse_name(xss(param("reply_name")));
+my $reply_text = parse_text(xss(param("reply_text")));
 
-$reply_name =~ s/\n//g; # Remove newline
-$reply_name =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespace
-$reply_name =~ s/\s+/ /g; # Remove consequtive whitespace
-
-$reply_text =~ s/\n/<br>/g; # Convert newline to <br>
-$reply_text =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespace
-$reply_text =~ s/\s+/ /g; # Remove consequtive whitespace
-$reply_text =~ s/\s+<br>|<br>\s+/<br>/g; # Get rid of space before or after br
-$reply_text =~ s/(<br>){3,}/<br><br>/g; # If more than 2 consequtive <br>, remove the excess
-
-# Check if topic and thread id are valid
-if ($topic_id eq "") {
-	print html_error("No topic selected");
-	exit 0;
-}
-if ($thread_id eq "") {
-	print html_error("No thread selected");
-	exit 0;
-}
-
-# Check if topic and thread exist
-my $topic_name = get_topic_name($topic_id);
-if ($topic_name eq "") {
-	print html_error("Selected topic doesn't exist");
-	exit 0;
-}
-my $thread_name = get_thread_name($topic_id, $thread_id);
-if ($thread_name eq "") {
-	print html_error("Selected thread doesn't exist");
-	exit 0;
-}
-
-# Check if reply name and text are valid
-if ($reply_name eq "") {
-	print html_error("Your name can't be empty");
-	exit 0;
-}
-if (length($reply_name) > $max_reply_name_length) {
-	print html_error("Your name is too long");
-	exit 0;
-}
-if ($reply_text eq "") {
-	print html_error("Your message can't be empty");
-	exit 0;
-}
-if (length($reply_text) > $max_reply_text_length) {
-	print html_error("Your message is too long");
+# Check for parameter errors
+my $err = check_reply_params($topic_id, $thread_id, $reply_name, $reply_text);
+if (!($err eq "")) {
+	print html_error($err);
 	exit 0;
 }
 
@@ -86,10 +87,15 @@ for my $i (0 .. $#replies) {
 	}
 }
 
+# Get date time
+my @datetime = localtime();
+my $date = sprintf("%0004d-%02d-%02d", $datetime[5] + 1900, $datetime[4] + 1, $datetime[3]);
+my $time = sprintf("%02d:%02d:%02d", $datetime[2], $datetime[1], $datetime[0]);
+
 # Append reply to thread_id.txt
 my $replies_file = "topics/$topic_id/$thread_id.txt";
 open(OUT, ">>", $replies_file) || die "Can't open $replies_file";
-print OUT "$reply_id $reply_name\n";
+print OUT "$reply_id $date $time $reply_name\n";
 print OUT "$reply_text\n";
 close(OUT);
 

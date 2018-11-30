@@ -7,27 +7,34 @@ use CGI::Carp qw(fatalsToBrowser);
 
 require "./lib.pl";
 
+sub check_topic_params { # (string topic_name)
+	# Constants
+	my $max_topic_name_length = 100;
+
+	my $topic_name = $_[0];
+	## Topic name
+	# Check if topic name is valid
+	if ($topic_name eq "") {
+		return "Topic name can't be empty";
+	}
+	# Check if topic name is not too long
+	if (length($topic_name) > $max_topic_name_length) {
+		return "Topic name is too long";
+	}
+	return "";
+}
+
+
 # Constants
-my $max_topic_name_length = 100;
 my $max_topics = 20;
 
 # Parameters
-my $topic_name = xss(param("topic_name"));
+my $topic_name = parse_name(xss(param("topic_name")));
 
-$topic_name =~ s/\n//g; # Remove newline
-$topic_name =~ s/^\s+|\s+$//g; # Remove trailing and leading whitespace
-$topic_name =~ s/\s+/ /g; # Remove consequtive whitespace
-
-
-## Topic name
-# Check if topic name is valid
-if ($topic_name eq "") {
-	print html_error("Topic name can't be empty");
-	exit 0;
-}
-# Check if topic name is not too long
-if (length($topic_name) > $max_topic_name_length) {
-	print html_error("Topic name is too long");
+# Check for parameter errors
+my $err = check_topic_params($topic_name);
+if (!($err eq "")) {
+	print html_error($err);
 	exit 0;
 }
 
