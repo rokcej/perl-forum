@@ -62,7 +62,7 @@ my $notice = "";
 if ($replies_list eq "") {
 	$notice = <<EOS;
 <div class="alert alert-primary alert-trim">
-	There aren't any replies to this thread yet.
+	There aren't any replies to this thread yet
 </div>
 EOS
 }
@@ -88,14 +88,14 @@ print <<EOS;
 </div>
 <div class="jumbotron jumbotron-fluid py-4 my-3">
 	<div class="container">
-		<h2>Post a reply</h2>
+		<h2>Post a reply <i class="fas fa-pen"></i></h2>
 		<form class="my-3" action="create_reply.cgi" method="post">
 			<input type="hidden" name="topic_id" value="$topic_id" />
 			<input type="hidden" name="thread_id" value="$thread_id" />
 			<div class="input-group my-3">
 				<input class="form-control" type="text" name="reply_name" size="40" placeholder="Enter your name" />
 				<div class="input-group-append">
-					<span class="input-group-text">Your name</span>
+					<span class="input-group-text">Your name &nbsp; <i class="fas fa-user"></i></span>
 				</div>
 			</div>
 			<div class="input-group my-3">

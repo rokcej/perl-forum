@@ -58,7 +58,6 @@ sub check_thread_params { # (int topic_id, string thread_name, string reply_name
 	return "";
 }
 
-
 # Constants
 my $max_threads = 50;
 
@@ -78,7 +77,7 @@ if (!($err eq "")) {
 # Check if too many threads exist
 my @threads = get_threads($topic_id);
 my $num_threads = @threads;
-if ($num_threads > $max_threads) {
+if ($num_threads >= $max_threads) {
 	print html_error("Too many threads already exist");
 	exit 0;
 }

@@ -54,7 +54,7 @@ sub check_reply_params { # (int topic_id, int thread_id, string reply_name, stri
 
 
 # Constants
-my $max_replies = 100;
+my $max_replies = 200;
 
 # Parameters
 my $topic_id = param("topic_id");
@@ -72,7 +72,7 @@ if (!($err eq "")) {
 # Check if too many replies exist
 my @replies = get_replies($topic_id, $thread_id);
 my $num_replies = @replies;
-if ($num_replies > $max_replies) {
+if ($num_replies >= $max_replies) {
 	print html_error("Too many replies already exist");
 	exit 0;
 }

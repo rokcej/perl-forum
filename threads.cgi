@@ -42,7 +42,6 @@ for my $i (0 .. $#threads_unsorted) {
 
 		my $new_name = $threads_unsorted[$i]->{name};
 		$new_name =~ s/(\Q$query\E)/<span class="text-primary">$1<\/span>/gi;
-		#$new_name =~ s/(\Q$query\E)/$1/gi;
 
 		# Check thread title for match
 		if (!($new_name eq $threads_unsorted[$i]{name})) {
@@ -58,12 +57,18 @@ for my $i (0 .. $#threads_unsorted) {
 		}
 		if ($reply_matches > 0) {
 			$threads_unsorted[$i]{hide} = 0;
-			my $reply_matches_string = ($reply_matches == 1 ? "$reply_matches reply match" : "$reply_matches reply matches");
+			my $reply_matches_string = ($reply_matches == 1 ? "$reply_matches reply" : "$reply_matches replies");
 			$threads_unsorted[$i]{name} .= " <span class=\"badge badge-primary\">$reply_matches_string</span>";
 		}
 	}
+
+	if (!$search || !$threads_unsorted[$i]{hide}) {
+		my $num_replies = @replies;
+		$threads_unsorted[$i]{num_replies} = $num_replies;
+	}
 }
 my @threads = sort { $b->{last_activity} cmp $a->{last_activity} } @threads_unsorted;
+# Append threads to list
 for my $i (0 .. $#threads) {
 	if ($search) {
 		if ($threads[$i]{hide}) {
@@ -74,9 +79,7 @@ for my $i (0 .. $#threads) {
 	my $id = $threads[$i]{id};
 	my $name = $threads[$i]{name};
 	my $last_activity = $threads[$i]{last_activity};
-
-	my @replies = get_replies($topic_id, $id);
-	my $num_replies = @replies;
+	my $num_replies = $threads[$i]{num_replies};
 	my $num_replies_string = $num_replies == 1 ? "$num_replies reply" : "$num_replies replies";
 
 	$threads_list .= <<EOS;
@@ -107,7 +110,7 @@ EOS
 	if ($search) {
 		$notice = <<EOS;
 <div class="alert alert-primary alert-trim">
-	Showing results for "$query"
+	Showing search results for "$query"
 </div>
 EOS
 	}
@@ -147,19 +150,19 @@ print <<EOS;
 
 <div class="jumbotron jumbotron-fluid py-4 my-3">
 	<div class="container">
-		<h2>Create a new thread</h2>
+		<h2>Create a new thread <i class="fas fa-file"></i></h2>
 		<form class="my-3" action="create_thread.cgi" method="post">
 			<input type="hidden" name="topic_id" value="$topic_id" />
 			<div class="input-group my-3">
 				<input class="form-control" type="text" name="thread_name" size="40" placeholder="Enter thread title" />
 				<div class="input-group-append">
-					<span class="input-group-text">Thread title</span>
+					<span class="input-group-text">Thread title &nbsp; <i class="fas fa-tag"></i></span>
 				</div>
 			</div>
 			<div class="input-group my-3">
 				<input class="form-control" type="text" name="reply_name" size="40" placeholder="Enter your name" />
 				<div class="input-group-append">
-					<span class="input-group-text">Your name</span>
+					<span class="input-group-text">Your name &nbsp; <i class="fas fa-user"></i></span>
 				</div>
 			</div>
 			<div class="input-group my-3">

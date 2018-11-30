@@ -161,11 +161,11 @@ sub html_header { # (string title)
 	return header() . <<EOS;
 <html>
 <head>
-<title>$_[0]</title>
+    <meta charset="utf-8">
+	<title>$_[0]</title>
 	
 <!-- CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="css/bootstrap-theme.min.css"> <!-- Bootstrap -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="css/style.css">
 
@@ -203,7 +203,7 @@ sub html_footer { # ()
 <div class="container">
 	<hr>
 	<footer>
-		<p class="footer-text text-center">&copy; 2018 Rok Cej</p>
+		<p class="footer-text text-center my-3">&copy; 2018 Rok Cej</p>
 	</footer>
 </div>
 

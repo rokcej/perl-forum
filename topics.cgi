@@ -9,24 +9,50 @@ require "./lib.pl";
 
 # Parameters
 my $topic_id = param("topic_id");
-my $query = xss(param("query"));
+my $query = parse_name(xss(param("query")));
 
 my $search = ($query eq "" ? 0 : 1);
 
 # Get list of topics
 my $topics_list = "";
-my @topics = sort { $a->{name} cmp $b->{name} } get_topics();
+my @topics = sort { lc($a->{name}) cmp lc($b->{name}) } get_topics();
 for my $i (0 .. $#topics) {
-	# Apply search query
-	if ($search) {
-		
-	}
-
-
 	my $id = $topics[$i]{id};
 	my $name = $topics[$i]{name};
+	my @threads = get_threads($id);
 
-	my $num_threads = get_threads($id);
+	# Apply search query
+	if ($search) {
+		my $thread_matches = 0;
+		my $hide = 1;
+
+		my $new_name = $name;
+		$new_name =~ s/(\Q$query\E)/<span class="text-primary">$1<\/span>/gi;
+
+		# Check thread title for match
+		if (!($new_name eq $name)) {
+			$name = $new_name;
+			$hide = 0;
+		}
+
+		# Check replies for matches
+		for my $j (0 .. $#threads) {
+			if (index(lc($threads[$j]{name}), lc($query)) != -1) {
+				$thread_matches++;
+			}
+		}
+		if ($thread_matches > 0) {
+			$hide = 0;
+			my $thread_matches_string = ($thread_matches == 1 ? "$thread_matches thread" : "$thread_matches threads");
+			$name .= " <span class=\"badge badge-primary\">$thread_matches_string</span>";
+		}
+
+		if ($hide) {
+			next;
+		}
+	}
+
+	my $num_threads = @threads;
 	my $num_threads_string = $num_threads == 1 ? "$num_threads thread" : "$num_threads threads";
 
 	$topics_list .= <<EOS;
@@ -40,11 +66,27 @@ EOS
 # Notice above topic list
 my $notice = "";
 if ($topics_list eq "") { # If topic list empty
-	$notice = <<EOS;
+	if ($search && $#topics > -1) {
+		$notice = <<EOS;
 <div class="alert alert-primary alert-trim">
-	There are no topics yet.
+	No topics match the search query "$query"
 </div>
 EOS
+	} else {
+		$notice = <<EOS;
+<div class="alert alert-primary alert-trim">
+	There are no topics yet
+</div>
+EOS
+	}
+} else { # Topic list not empty
+	if ($search) {
+		$notice = <<EOS;
+<div class="alert alert-primary alert-trim">
+	Showing search results for "$query"
+</div>
+EOS
+	}
 }
 
 print html_header("Forum");
@@ -80,7 +122,7 @@ function showCreateTopicForm() {
 				Topics
 			</h1>
 			<div class="mt-2 ml-3">
-				<a id="createTopicButton" class="btn btn-primary align-top" href="#" role="button" onclick="showCreateTopicForm();">Create new</a>
+				<a id="createTopicButton" class="btn btn-primary align-top" href="#" role="button" onclick="showCreateTopicForm();">Create a new topic <i class="fas fa-folder"></i></a>
 				<form id="createTopicForm" action="create_topic.cgi" method="post" style="display: none;">
 					<div class="d-flex flex-row">
 						<div class="mr-2">

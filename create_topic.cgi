@@ -26,7 +26,7 @@ sub check_topic_params { # (string topic_name)
 
 
 # Constants
-my $max_topics = 20;
+my $max_topics = 10;
 
 # Parameters
 my $topic_name = parse_name(xss(param("topic_name")));
@@ -41,7 +41,7 @@ if (!($err eq "")) {
 # Check if too many topics exist
 my @topics = get_topics();
 my $num_topics = @topics;
-if ($num_topics > $max_topics) {
+if ($num_topics >= $max_topics) {
 	print html_error("Too many topics already exist");
 	exit 0;
 }
