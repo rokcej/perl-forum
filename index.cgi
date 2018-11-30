@@ -7,6 +7,27 @@ use CGI::Carp qw(fatalsToBrowser);
 
 require "./lib.pl";
 
+my $views_file = "views.txt";
+# Make sure the file exists
+if (!(-e $views_file && -f $views_file)) {
+	open(OUT, ">>", $views_file) || die "Can't open $views_file";
+	close(OUT);
+}
+
+# Get views
+open(IN, "<", $views_file) || die "Can't open $views_file";
+my $num_views = <IN>;
+close(IN);
+# Increment views
+chomp($num_views);
+$num_views++;
+# Update views
+open(OUT, ">", $views_file) || die "Can't open $views_file";
+print OUT "$num_views\n";
+close(OUT);
+
+my $num_views_string = ($num_views == 1 ? "$num_views time" : "$num_views times");
+
 print html_header("Forum");
 print <<EOS;
 
@@ -54,6 +75,15 @@ print <<EOS;
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	
+	<div class="my-5">
+		<div class="text-center my-3">
+			<h1 class="display-4">Stats</h1>
+		</div>
+		<div class="text-center my-3">
+			<p class="lead ">This homepage has been visited $num_views_string</p>
 		</div>
 	</div>
 </div>
