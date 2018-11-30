@@ -35,7 +35,7 @@ print <<EOS;
 	<div class="container">
 		<h1 class="display-1 text-white">Perl Forum</h1>
 		<p class="lead text-light">A simple and anonymous forum open to anyone, anywhere</p>
-		<a href="topics.cgi" class="btn btn-light mt-3" role="button"><h1 class="display-4 py-2 px-4">Start Browsing</h1></a>
+		<a href="topics.cgi" class="btn btn-light mt-3" role="button"><h1 class="display-4 py-2 px-4 breakable-button">Start Browsing</h1></a>
 	</div>
 </div>
 

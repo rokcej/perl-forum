@@ -50,8 +50,8 @@ for my $i (0 .. $#replies) {
 		<h4 class="m-1 reply-info-name text-primary">$name</h4>
 		<p class="m-1 reply-info-date text-secondary">$time</p>
 	</div>
-	<div class="p-3 reply-text">
-		<p class="">$text</p>
+	<div class="p-3 reply-text flex-grow-1">
+		<p class="reply">$text</p>
 	</div>
 </div>
 EOS
@@ -74,14 +74,14 @@ print <<EOS;
 <div class="container">
 	<nav aria-label="breadcrumb">
 		<ol class="my-3 breadcrumb">
-			<li class="breadcrumb-item"><a href="topics.cgi">Topics</a></li>
-			<li class="breadcrumb-item"><a href="threads.cgi?topic_id=$topic_id">$topic_name</a></li>
-			<li class="breadcrumb-item active" aria-current="page">$thread_name</li>
+			<li class="breadcrumb-item text-truncate"><a href="topics.cgi">Topics</a></li>
+			<li class="breadcrumb-item text-truncate"><a href="threads.cgi?topic_id=$topic_id">$topic_name</a></li>
+			<li class="breadcrumb-item text-truncate active" aria-current="page">$thread_name</li>
 		</ol>
 	</nav>
 
 	<div class="mb-4">
-		<h1 class="my-3">$thread_name</h1>
+		<h1 class="replies-title my-3">$thread_name</h1>
 		$notice
 		$replies_list
 	</div>

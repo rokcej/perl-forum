@@ -94,7 +94,7 @@ print <<EOS;
 <div class="container">
 	<nav aria-label="breadcrumb">
 		<ol class="my-3 breadcrumb">
-			<li class="breadcrumb-item active" aria-current="page">Topics</li>
+			<li class="breadcrumb-item text-truncate active" aria-current="page">Topics</li>
 		</ol>
 	</nav>
 
@@ -113,6 +113,7 @@ print <<EOS;
 function showCreateTopicForm() {
 	document.getElementById("createTopicButton").style.display = "none";
 	document.getElementById("createTopicForm").style.display = "inline";
+	document.getElementById("createTopicInput").focus(); 
 }
 </script>
 
@@ -126,7 +127,7 @@ function showCreateTopicForm() {
 				<form id="createTopicForm" class="align-top" action="create_topic.cgi" method="post" style="display: none;">
 					<div class="d-inline-flex flex-row">
 						<div class="mr-2">
-							<input class="form-control" type="text" name="topic_name" size="40" placeholder="Enter new topic name" />
+							<input id="createTopicInput" class="form-control" type="text" name="topic_name" size="40" placeholder="Enter new topic name" />
 						</div>
 						<div class="ml-2">
 							<input class="btn btn-primary" type="submit" value="Create topic" />

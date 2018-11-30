@@ -122,8 +122,8 @@ print <<EOS;
 <div class="container">
 	<nav aria-label="breadcrumb">
 		<ol class="my-3 breadcrumb">
-			<li class="breadcrumb-item"><a href="topics.cgi">Topics</a></li>
-			<li class="breadcrumb-item active" aria-current="page">$topic_name</li>
+			<li class="breadcrumb-item text-truncate"><a href="topics.cgi">Topics</a></li>
+			<li class="breadcrumb-item text-truncate active" aria-current="page">$topic_name</li>
 		</ol>
 	</nav>
 
@@ -140,7 +140,7 @@ print <<EOS;
 	</form>
 	
 	<div class="mb-4">
-		<h1 class="my-3">$topic_name</h1>
+		<h1 class="threads-title my-3">$topic_name</h1>
 		$notice
 		<div class="list-group">
 			$threads_list
