@@ -56,7 +56,7 @@ for my $i (0 .. $#topics) {
 	my $num_threads_string = $num_threads == 1 ? "$num_threads thread" : "$num_threads threads";
 
 	$topics_list .= <<EOS;
-<a class="topic list-group-item list-group-item-action" href=\"threads.cgi?topic_id=$id\">
+<a class="py-4 topic list-group-item list-group-item-action" href=\"threads.cgi?topic_id=$id\">
 	<span class="topic-name"><i class="fas fa-angle-right"></i> $name</span>
 	<span class="text-black-50 float-right mt-1">$num_threads_string</span>
 </a>
@@ -112,19 +112,19 @@ print <<EOS;
 <script>
 function showCreateTopicForm() {
 	document.getElementById("createTopicButton").style.display = "none";
-	document.getElementById("createTopicForm").style.display = "inline-block";
+	document.getElementById("createTopicForm").style.display = "inline";
 }
 </script>
 
 	<div class="mb-4">
-		<div class="d-flex flex-row">
-			<h1 class="mb-3">
+		<div class="">
+			<h1 class="topics-title mb-3">
 				Topics
 			</h1>
-			<div class="mt-2 ml-3">
+			<div class="d-inline-block align-top m-2">
 				<a id="createTopicButton" class="btn btn-primary align-top" href="#" role="button" onclick="showCreateTopicForm();">Create a new topic <i class="fas fa-folder"></i></a>
-				<form id="createTopicForm" action="create_topic.cgi" method="post" style="display: none;">
-					<div class="d-flex flex-row">
+				<form id="createTopicForm" class="align-top" action="create_topic.cgi" method="post" style="display: none;">
+					<div class="d-inline-flex flex-row">
 						<div class="mr-2">
 							<input class="form-control" type="text" name="topic_name" size="40" placeholder="Enter new topic name" />
 						</div>

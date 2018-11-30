@@ -9,7 +9,7 @@ require "./lib.pl";
 
 # Parameters
 my $topic_id = param("topic_id");
-my $query = xss(param("query"));
+my $query = parse_name(xss(param("query")));
 
 my $search = ($query eq "" ? 0 : 1);
 

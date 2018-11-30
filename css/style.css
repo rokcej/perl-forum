@@ -22,3 +22,11 @@
 .thread, .topic, .reply, .breadcrumb {
 	word-break: break-all;
 }
+
+.topics-title {
+	display: inline-block;
+}
+
+.nav-link:hover {
+	color: white !important;
+}

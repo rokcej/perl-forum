@@ -194,7 +194,6 @@ sub html_header { # (string title)
 	</div>
 </nav>
 
-
 EOS
 }
 
@@ -203,7 +202,11 @@ sub html_footer { # ()
 <div class="container">
 	<hr>
 	<footer>
-		<p class="footer-text text-center my-3">&copy; 2018 Rok Cej</p>
+		<p class="footer-text text-center my-3">&copy; 
+<script type="text/javascript">
+	document.write(new Date().getFullYear());
+</script> 
+		Rok Cej</p>
 	</footer>
 </div>
 
@@ -218,9 +221,12 @@ EOS
 
 sub html_error { # (string message)
 	return html_header("Error") . <<EOS . html_footer();
-<div class="container my-5 text-center">
-	<h3>Error: $_[0]</h3>
-	<p>If you believe this is a bug, please contact the administrators</p>
+<div class="jumbotron my-3">
+	<div class="container my-5 text-center">
+		<h1 class="display-4"><i class="fas fa-exclamation-triangle fa-3x mb-4"></i></h1>
+		<h1 class="display-4">Error: $_[0]</h1>
+		<p class="lead">If you believe this is a bug, please contact the administrators</p>
+	</div>
 </div>
 EOS
 }
