@@ -119,10 +119,10 @@ function showCreateTopicForm() {
 
 	<div class="mb-4">
 		<div class="">
-			<h1 class="topics-title mb-3">
+			<h1 class="topics-title mb-3 mr-2">
 				Topics
 			</h1>
-			<div class="d-inline-block align-top m-2">
+			<div class="d-inline-block align-top my-2">
 				<a id="createTopicButton" class="btn btn-primary align-top" href="#" role="button" onclick="showCreateTopicForm();">Create a new topic <i class="fas fa-folder"></i></a>
 				<form id="createTopicForm" class="align-top" action="create_topic.cgi" method="post" style="display: none;">
 					<div class="d-inline-flex flex-row">
