@@ -32,7 +32,7 @@ close(OUT);
 
 my $num_views_string = ($num_views == 1 ? "$num_views time" : "$num_views times");
 
-print html_header("Forum");
+print html_header("Perl Forum");
 print <<EOS;
 
 <div class="jumbotron jumbotron-fluid my-3 text-center bg-primary">

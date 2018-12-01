@@ -89,7 +89,7 @@ EOS
 	}
 }
 
-print html_header("Forum");
+print html_header("Topics");
 print <<EOS;
 <div class="container">
 	<nav aria-label="breadcrumb">
