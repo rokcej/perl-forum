@@ -33,10 +33,14 @@ sub parse_text { # (string text)
 }
 
 sub get_topics { # ()
-	my $topics_dir = "topics";
+	my $data_dir = "./data";
+	my $topics_dir = "$data_dir/topics";
 	my $topics_file = "$topics_dir/topics.txt";
 
 	# Create required dirs / files if they don't exist
+	if (!(-e $data_dir && -d $data_dir)) {
+		mkdir($data_dir) || die "Can't create $data_dir";
+	}
 	if (!(-e $topics_dir && -d $topics_dir)) {
 		mkdir($topics_dir) || die "Can't create $topics_dir";
 	}
@@ -77,7 +81,7 @@ sub get_topic_name { # (int topic_id)
 
 sub get_threads { # (int topic_id)
 	my $topic_id = $_[0];
-	my $threads_dir = "topics/$topic_id";
+	my $threads_dir = "data/topics/$topic_id";
 	my $threads_file = "$threads_dir/threads.txt";
 
 	# Create required dirs / files if they don't exist
@@ -123,7 +127,7 @@ sub get_thread_name { # (int topic_id, int thread_id)
 sub get_replies { # (int topic_id, int thread_id)
 	my $topic_id = $_[0];
 	my $thread_id = $_[1];
-	my $replies_file = "topics/$topic_id/$thread_id.txt";
+	my $replies_file = "data/topics/$topic_id/$thread_id.txt";
 
 	# Create required files
 	if (!(-e $replies_file && -f $replies_file)) {

@@ -7,8 +7,12 @@ use CGI::Carp qw(fatalsToBrowser);
 
 require "./lib.pl";
 
-my $views_file = "views.txt";
-# Make sure the file exists
+my $data_dir = "./data";
+my $views_file = "$data_dir/views.txt";
+# Make sure the file and dir exist
+if (!(-e $data_dir && -d $data_dir)) {
+		mkdir($data_dir) || die "Can't create $data_dir";
+	}
 if (!(-e $views_file && -f $views_file)) {
 	open(OUT, ">>", $views_file) || die "Can't open $views_file";
 	close(OUT);

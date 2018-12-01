@@ -101,8 +101,8 @@ my $date = sprintf("%0004d-%02d-%02d", $datetime[5] + 1900, $datetime[4] + 1, $d
 my $time = sprintf("%02d:%02d:%02d", $datetime[2], $datetime[1], $datetime[0]);
 
 # Append thread to threads.txt and reply to thread_id.txt
-my $threads_file = "topics/$topic_id/threads.txt";
-my $replies_file = "topics/$topic_id/$thread_id.txt";
+my $threads_file = "./data/topics/$topic_id/threads.txt";
+my $replies_file = "./data/topics/$topic_id/$thread_id.txt";
 open(OUT_THREAD, ">>", $threads_file) || die "Can't open $threads_file";
 open(OUT_REPLY, ">>", $replies_file) || die "Can't open $replies_file";
 

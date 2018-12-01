@@ -63,7 +63,7 @@ for my $i (0 .. $#topics) {
 }
 
 # Append topic to topics.txt
-my $topics_file = "topics/topics.txt";
+my $topics_file = "./data/topics/topics.txt";
 open(OUT, ">>", $topics_file) || die "Can't open $topics_file";
 print OUT "$topic_id $topic_name\n";
 close(OUT);

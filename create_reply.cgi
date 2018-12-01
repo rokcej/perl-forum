@@ -93,7 +93,7 @@ my $date = sprintf("%0004d-%02d-%02d", $datetime[5] + 1900, $datetime[4] + 1, $d
 my $time = sprintf("%02d:%02d:%02d", $datetime[2], $datetime[1], $datetime[0]);
 
 # Append reply to thread_id.txt
-my $replies_file = "topics/$topic_id/$thread_id.txt";
+my $replies_file = "./data/topics/$topic_id/$thread_id.txt";
 open(OUT, ">>", $replies_file) || die "Can't open $replies_file";
 print OUT "$reply_id $date $time $reply_name\n";
 print OUT "$reply_text\n";
