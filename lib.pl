@@ -163,13 +163,12 @@ sub html_header { # (string title)
 <head>
     <meta charset="utf-8">
 	<title>$_[0]</title>
+	<link rel="shortcut icon" href="favicon.ico">
 	
 <!-- CSS -->
 <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="css/style.css">
-
-<link rel="shortcut icon" href="favicon.ico">
 
 </head>
 <body>
@@ -189,7 +188,7 @@ sub html_header { # (string title)
 				<a class="nav-link" href="topics.cgi">Topics</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">About</a>
+				<a class="nav-link" href="about.cgi">About</a>
 			</li>
 			</ul>
 		</div>
