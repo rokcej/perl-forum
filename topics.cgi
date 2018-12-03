@@ -101,10 +101,15 @@ print <<EOS;
 	<form class="my-3" action="topics.cgi" method="get">
 		<div class="d-flex flex-row">
 			<div class="mr-2">
-				<input class="form-control" type="text" name="query" size="40" placeholder="Enter search query" />
+				<div class="input-group">
+					<input class="form-control" type="text" name="query" size="40" placeholder="Enter search query" />
+					<div class="input-group-append">
+						<span class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></span>
+					</div>
+				</div>
 			</div>
 			<div class="ml-2">
-				<input class="btn btn-primary" type="submit" value="Search" />
+				<input class="btn btn-primary" type="submit" value="Search " />
 			</div>
 		</div>
 	</form>
@@ -123,7 +128,7 @@ function showCreateTopicForm() {
 				Topics
 			</h1>
 			<div class="d-inline-block align-top my-2">
-				<a id="createTopicButton" class="btn btn-primary align-top" href="#" role="button" onclick="showCreateTopicForm();">Create a new topic <i class="fas fa-folder"></i></a>
+				<a id="createTopicButton" class="btn btn-primary align-top" href="#" role="button" onclick="showCreateTopicForm();"><i class="fas fa-folder-plus"></i>&nbsp;Create a new topic</a>
 				<form id="createTopicForm" class="align-top" action="create_topic.cgi" method="post" style="display: none;">
 					<div class="d-inline-flex flex-row">
 						<div class="mr-2">

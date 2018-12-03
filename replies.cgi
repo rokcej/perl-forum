@@ -88,7 +88,7 @@ print <<EOS;
 </div>
 <div class="jumbotron jumbotron-fluid py-4 my-3">
 	<div class="container">
-		<h2>Post a reply <i class="fas fa-pen"></i></h2>
+		<h2><i class="fas fa-pen"></i>&nbsp;Post a reply</h2>
 		<form class="my-3" action="create_reply.cgi" method="post">
 			<input type="hidden" name="topic_id" value="$topic_id" />
 			<input type="hidden" name="thread_id" value="$thread_id" />

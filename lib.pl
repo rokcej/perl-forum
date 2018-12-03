@@ -161,7 +161,35 @@ sub get_replies { # (int topic_id, int thread_id)
 	return @replies;
 }
 
+sub get_source_files {
+	my $source_dir = "./";
+	opendir(DIR, $source_dir) || die "Can't open $source_dir";
+	my @files = ();
+	while (my $file = readdir(DIR)) {
+		if ($file =~ m/(.*\.cgi$)|(.*\.pl$)/i) {
+			push(@files, $file);
+		}
+	}
+	closedir(DIR);
+	return @files;
+}
+
 sub html_header { # (string title)
+	# Get list of source files
+	my @source_files = get_source_files();
+	my $source_list = "";
+	foreach my $file (@source_files) {
+		$source_list .= <<EOS;
+<a class="dropdown-item" href="source.cgi?file=$file">$file</a>
+EOS
+	}
+
+	if ($source_list eq "") {
+		$source_list = <<EOS;
+<span class="dropdown-item disabled">No source files found</span>
+EOS
+	}
+
 	return header() . <<EOS;
 <html>
 <head>
@@ -170,8 +198,11 @@ sub html_header { # (string title)
 	<link rel="shortcut icon" href="favicon.ico">
 	
 <!-- CSS -->
-<link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> <!-- Font Awesome Icons -->
+	<!-- Bootstrap -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+	<!-- Fontawesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<!-- My CSS -->
 <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -185,15 +216,23 @@ sub html_header { # (string title)
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" href="index.cgi">Home</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="topics.cgi">Topics</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="about.cgi">About</a>
-			</li>
+				<li class="nav-item">
+					<a class="nav-link" href="index.cgi"><i class="fas fa-home"></i>&nbsp;Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="topics.cgi"><i class="fas fa-folder"></i>&nbsp;Topics</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="about.cgi"><i class="fas fa-user-circle"></i>&nbsp;About</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-code"></i>&nbsp;Source
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						$source_list
+					</div>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -216,8 +255,10 @@ sub html_footer { # ()
 </div>
 
 <!-- JS -->
-<script src="js/jquery-3.3.1.min.js"></script> <!-- jQuery -->
-<script src="js/bootstrap.min.js"></script> <!-- Latest compiled and minified JavaScript -->
+	<!-- jQuery -->
+<script src="js/jquery-3.3.1.min.js"></script>
+	<!-- Bootstrap -->
+<script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>

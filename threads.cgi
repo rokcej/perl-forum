@@ -131,7 +131,12 @@ print <<EOS;
 		<input type="hidden" name="topic_id" value="$topic_id" />
 		<div class="d-flex flex-row">
 			<div class="mr-2">
-				<input class="form-control" type="text" name="query" size="40" placeholder="Enter search query" />
+				<div class="input-group">
+					<input class="form-control" type="text" name="query" size="40" placeholder="Enter search query" />
+					<div class="input-group-append">
+						<span class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></span>
+					</div>
+				</div>
 			</div>
 			<div class="ml-2">
 				<input class="btn btn-primary" type="submit" value="Search" />
@@ -150,7 +155,7 @@ print <<EOS;
 
 <div class="jumbotron jumbotron-fluid py-4 my-3">
 	<div class="container">
-		<h2>Create a new thread <i class="fas fa-file"></i></h2>
+		<h2><i class="fas fa-file"></i>&nbsp;Create a new thread</h2>
 		<form class="my-3" action="create_thread.cgi" method="post">
 			<input type="hidden" name="topic_id" value="$topic_id" />
 			<div class="input-group my-3">

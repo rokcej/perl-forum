@@ -39,3 +39,14 @@
 .nav-link:hover {
 	color: white !important;
 }
+
+a.dropdown-item:hover {
+	background-color: #F4F4F4;
+}
+
+pre {
+	background-color: #F4F4F4;
+    border: 1px solid #DDD;
+	border-left: 3px solid #007bff;
+	color: #444;
+}
