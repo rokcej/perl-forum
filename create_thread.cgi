@@ -114,8 +114,15 @@ print OUT_REPLY "$reply_text\n";
 close(OUT_REPLY);
 close(OUT_THREAD);
 
+# Create user name cookie
+my $cookie = cookie(
+	-name => "perl-forum-user-name",
+	-value => $reply_name,
+	-expires => "+1d" # 1 day
+);
+
 # Redirect user to new thread
-print header();
+print header(-cookie => $cookie);
 print <<EOS;
 <script type="text/javascript">
 	location.replace("replies.cgi?topic_id=$topic_id&thread_id=$thread_id");

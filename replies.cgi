@@ -67,6 +67,13 @@ if ($replies_list eq "") {
 EOS
 }
 
+# Get username from cookie if it exists
+my $user_name = cookie("perl-forum-user-name");
+my $user_name_input_param = "";
+if (!($user_name eq "")) {
+	$user_name_input_param = "value=\"$user_name\"";
+}
+
 # Print HTML
 print html_header($thread_name);
 print <<EOS;
@@ -93,7 +100,7 @@ print <<EOS;
 			<input type="hidden" name="topic_id" value="$topic_id" />
 			<input type="hidden" name="thread_id" value="$thread_id" />
 			<div class="input-group my-3">
-				<input class="form-control" type="text" name="reply_name" size="40" placeholder="Enter your name" />
+				<input class="form-control" type="text" name="reply_name" size="40" placeholder="Enter your name" $user_name_input_param />
 				<div class="input-group-append">
 					<span class="input-group-text">Your name &nbsp; <i class="fas fa-user"></i></span>
 				</div>

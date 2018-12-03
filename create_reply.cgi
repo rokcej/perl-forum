@@ -99,8 +99,15 @@ print OUT "$reply_id $date $time $reply_name\n";
 print OUT "$reply_text\n";
 close(OUT);
 
+# Create user name cookie
+my $cookie = cookie(
+	-name => "perl-forum-user-name",
+	-value => $reply_name,
+	-expires => "+1d" # 1 day
+);
+
 # Redirect user to new reply
-print header();
+print header(-cookie => $cookie);
 print <<EOS;
 <script type="text/javascript">
 	location.replace("replies.cgi?topic_id=$topic_id&thread_id=$thread_id#reply$reply_id");
